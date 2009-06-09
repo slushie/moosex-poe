@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 use strict;
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 my ($base_start_called, $extended_start_called);
 {
@@ -12,6 +12,8 @@ my ($base_start_called, $extended_start_called);
     ::pass('Base Start');
     $base_start_called = 1;
   };
+
+  event baz => sub { ::pass("baz") };
 
   sub on_foo {
     ::pass('on_foo');
@@ -32,6 +34,7 @@ my ($base_start_called, $extended_start_called);
 
   sub on_bar {
     ::pass('on_bar');
+    $_[KERNEL]->yield('baz');
   }
 }
 
